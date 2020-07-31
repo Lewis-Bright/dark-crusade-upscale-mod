@@ -21,10 +21,14 @@ if len(dds_files) < 0:
 if len(dds_files) > 99:
     raise Exception("Can not handle more than 99 dds files in folder")
     
+file_commands = {}
 for file in dds_files:
     og_file_number = int(file[-6:-4])
     new_file_number = str(og_file_number + int(sys.argv[2]))
     if len(new_file_number) < 2:
         new_file_number = "0" + new_file_number
     new_file_name = file[:-6] + new_file_number + file[-4:]
-    print(new_file_name)
+    file_commands[og_file_number] = (file, new_file_name)
+    
+for command in sorted(file_commands.items(), reverse=True):
+    os.rename(command[1][0], command[1][1])
