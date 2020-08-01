@@ -31,4 +31,5 @@ for file in dds_files:
     file_commands[og_file_number] = (file, new_file_name)
     
 for command in sorted(file_commands.items(), reverse=True):
+    print(command[1][0] + " -> " + command[1][1])
     os.rename(command[1][0], command[1][1])
