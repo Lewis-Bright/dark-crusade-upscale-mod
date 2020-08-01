@@ -6,15 +6,11 @@ Before any of this, make sure you extract the DXP2/DXP2Data-SharedTextures-Full.
 ## WTP files
 I believe these files are used for any model which has a team colouring. They contain many different elements, the most important for us is the model_name_default.tga file. This is what we will be actually upscaling (the rest I'm just enlarging).
 Currently for WTP files I am doing the following:
-* Using the Dawn of War texture tool (can be found online) to extract the WTP file into several TGA files. These Targa files have lots of formatting that is frankly irritating to try and get right, before they can be repackaged into WTP files, so keep this in mind. I run the gimp script I have attached to transform everything but the \_default.tga file by 4x (you need to have a "new" folder in the same place as the TGA's. I have two powershell aliases that help me run this:
+* Using the Dawn of War texture tool (can be found online) to extract the WTP file into several TGA files. These Targa files have lots of formatting that is frankly irritating to try and get right, before they can be repackaged into WTP files, so keep this in mind. I run the gimp script I have attached to transform everything but the \_default.tga file by 4x (you need to have a "new" folder in the same place as the TGA's. I have a powershell aliases that helps me run this:
 
 ```
-function upscale($defaultName) {
-        gimp-2.10 -i -b "(resize-image-keep-ratio \`"$defaultName\`" 2048 2048)" -b "(gimp-quit 0)"
-}
-
-function upscaleSmall($defaultName) {
-        gimp-2.10 -i -b "(resize-image-keep-ratio \`"$defaultName\`" 1024 1024)" -b "(gimp-quit 0)"
+function upscaleTo($defaultName, $newRes) {
+	gimp-2.10 -i -b "(resize-image-keep-ratio \`"$defaultName\`" $newRes $newRes)" -b "(gimp-quit 0)"
 }
 ```
 
@@ -25,7 +21,7 @@ but the basic usage is: `gimp-2.10 -i -b "(resize-image-keep-ratio \`"ig_imperia
 * Finally, use the dawn of war texture tool to convert all these back into WTP textures (just select one of the TGA's in the folder, it will find the rest). Then place this file in the relevant folder of your mod (as seen in this Repo).
 
 ## RSH files
-I think these are files for anything that is not affected by team colouring (buildings etc). These contain DDS files, which contain mipmaps. Mipmaps are essentially different resolution drawings of the same image, so that you can render smaller images if you need to. It's clear in Dawn of War that this is used when you zoom out, as the texture on certain buildings change (tested by drawing some random squiggles on different mipmap levels and seeing them appear at certain zoom levels). The important thing here (took me hours to figure out) is that you need to have a logarithmic sequence of resolutions for each of these. What I mean by that, is for a 64x64 texture image, you would need the following: 64x64, 32x32, 16x16, 8x8, 4x4, 2x2, 1x1. If you do not follow this sequence, you will get pink textures (although the texture tool will still compile these into RSH files, and the DoW logs will not tell you what is going on, just that it can't load them).
+I think these are files for anything that is not affected by team colouring (buildings etc). These contain DDS files, which contain mipmaps. Mipmaps are essentially different resolution drawings of the same image, so that you can render smaller images if you need to. It's clear in Dawn of War that this is used when you zoom out, as the texture on certain buildings change (tested by drawing some random squiggles on different mipmap levels and seeing them appear at certain zoom levels). The important thing here (took me hours to figure out) is that you need to have a logarithmic sequence of resolutions for each of these. What I mean by that, is for a 64x64 texture image, you would need the following: 64x64, 32x32, 16x16, 8x8, 4x4, 2x2, 1x1. If you do not follow this sequence, you will get pink textures (although the texture tool will still compile these into RSH files, and the DoW logs will not tell you what is going on, just that it can't load them). ANnoyingly there seems to be a hard limit on this, and you can't have any more than 10 mipmap layers in the DDS files. This unfortunately gives us a max resolution of 1024x1024. I'm yet to find a way around this...
 
 My steps are as follows:
 * Use dawn of war texture tool to extract RSH files into DDS files. Keep these in a separate folder as with the WTP method.
