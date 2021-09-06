@@ -1,6 +1,8 @@
 # dark-crusade-upscale-mod
 A mod to upscale all textures 4x in Dawn of War - Dark Crusade
 
+# This is all outdated and the workflow is now completely different, although this probably still contains some useful information
+
 # Current Workflow
 Before any of this, make sure you extract the DXP2/DXP2Data-SharedTextures-Full.sga file using Relic's Mod Packager tool. When editing a texture, my basic starting point is to copy the file I want to edit to its own folder, then create a "new" folder at the same level as the file. This makes it easier to revisit old edits. At the moment I've only changed RSH and WTP files.
 ## WTP files
